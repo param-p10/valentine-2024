@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Arvo">
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+
+<main>
+    <p id="typed-text"></p>
+    <div id="heart-container"></div>
+    <div class="button-container">
+        <button id="yes-button">Yes</button>
+        <button id="no-button">No</button>
+    </div>
+    <p id="response-message"></p>
+
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const typedText = document.getElementById('typed-text');
+        const textContent = "Miss Bharucha,\n" +
+                            "For you, I have learned the nonsense that is web development.\n" +
+                            "As painful and tedious this process was, I would do it all again in a heartbeat.\n" +
+                            "To me your nothing less than the world, and I believe I'm the luckiest guy in the world.\n" +
+                            "So...\n" +
+                            "Will you be my Valentine?\n";
+        let index = 0;
+        const typingSpeed = 50;
+
+        
+
+        function typeWriter() {
+            if (index < textContent.length) {
+                typedText.innerHTML += textContent.charAt(index);
+                index++;
+            setTimeout(typeWriter, typingSpeed);
+            } else {
+                const buttonContainer = document.querySelector('.button-container');
+                buttonContainer.style.display = 'block';
+            }
+        }
+
+        function generateHearts() {
+        const heartContainer = document.getElementById('heart-container');
+        for (let i = 0; i < 10; i++) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+
+            const startX = Math.random() * window.innerWidth;
+            const startY = Math.random() * window.innerHeight;
+            heart.style.left = startX + 'px';
+            heart.style.top = startY + 'px';
+
+            heartContainer.appendChild(heart);
+
+            setTimeout(() => {
+                explodeHeart(heart);
+            }, Math.random() * 2000);
+        }
+    }
+
+    function explodeHeart(heart) {
+        for (let i = 0; i < 10; i++) {
+            const smallHeart = document.createElement('div');
+            smallHeart.classList.add('small-heart');
+            smallHeart.innerHTML = '❤️';
+
+           
+            smallHeart.style.left = heart.style.left;
+            smallHeart.style.top = heart.style.top;
+            const dx = Math.random() * 200 - 100;
+            const dy = Math.random() * 200 - 100;
+
+            smallHeart.style.animation = `move-heart ${Math.random() * 1.5 + 0.5}s ease-out`;
+
+            smallHeart.style.transform = `translate(${dx}px, ${dy}px)`;
+
+            heart.parentNode.appendChild(smallHeart);
+
+            smallHeart.addEventListener('animationend', () => {
+                smallHeart.remove();
+            });
+        }
+
+ 
+        heart.remove();
+    }
+
+    
+    
+
+        typeWriter(); 
+
+        const yesButton = document.getElementById('yes-button');
+        const noButton = document.getElementById('no-button');
+        const responseMessage = document.getElementById('response-message');
+
+        yesButton.addEventListener('click', function() {
+            responseMessage.textContent = "Let's Go! Please contact 2896983124 for more details";
+            responseMessage.style.fontSize = "36px"
+            responseMessage.style.color = "#000000";
+            generateHearts();
+        });
+
+        noButton.addEventListener('click', function() {
+            responseMessage.textContent = "Burn in hell";
+            responseMessage.style.fontSize = "36px"
+            responseMessage.style.color = "#000000";
+            setTimeout(function() {
+                window.close(); 
+            }, 3000);
+        });
+    });
+</script>
